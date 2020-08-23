@@ -8,7 +8,7 @@
 import logging
 from collections import defaultdict
 from enum import Enum
-
+import pdb
 import numpy as np
 import torch
 from det3d.core import box_torch_ops
@@ -1272,6 +1272,7 @@ class CenterHead(nn.Module):
         pass
 
     def forward(self, x):
+        pdb.set_trace()
         ret_dicts = []
 
         x = self.shared_conv(x)
@@ -1286,6 +1287,7 @@ class CenterHead(nn.Module):
         return y
 
     def loss(self, example, preds_dicts, **kwargs):
+        pdb.set_trace()
         rets = []
         for task_id, preds_dict in enumerate(preds_dicts):
             # heatmap focal loss
@@ -1321,7 +1323,7 @@ class CenterHead(nn.Module):
         for ret in rets:
             for k, v in ret.items():
                 rets_merged[k].append(v)
-
+        pdb.set_trace()
         return rets_merged
 
 

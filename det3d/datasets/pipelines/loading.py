@@ -6,6 +6,7 @@ from functools import reduce
 import pycocotools.mask as maskUtils
 
 from pathlib import Path
+import pdb
 from copy import deepcopy
 from det3d import torchie
 from det3d.core import box_np_ops
@@ -90,7 +91,7 @@ class LoadPointCloudFromFile(object):
                 nsweeps, len(info["sweeps"])
             )
 
-            for i in np.random.choice(len(info["sweeps"]), nsweeps - 1, replace=False):
+            for i in np.arange(9):
                 sweep = info["sweeps"][i]
                 points_sweep, times_sweep = read_sweep(sweep)
                 sweep_points_list.append(points_sweep)
@@ -105,7 +106,7 @@ class LoadPointCloudFromFile(object):
 
         else:
             raise NotImplementedError
-
+        pdb.set_trace()
         return res, info
 
 

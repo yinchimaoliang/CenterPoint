@@ -134,19 +134,19 @@ db_sampler = dict(
 )
 train_preprocessor = dict(
     mode="train",
-    shuffle_points=True,
+    shuffle_points=False,
     gt_loc_noise=[0.0, 0.0, 0.0],
     gt_rot_noise=[0.0, 0.0],
-    global_rot_noise=[-0.3925, 0.3925],
-    global_scale_noise=[0.95, 1.05],
+    global_rot_noise=[0.0, 0.0],
+    global_scale_noise=[1.0, 1.0],
     global_rot_per_obj_range=[0, 0],
-    global_trans_noise=[0.2, 0.2, 0.2],
+    global_trans_noise=[0.0, 0.0, 0.0],
     remove_points_after_sample=False,
     gt_drop_percentage=0.0,
-    gt_drop_max_keep_points=15,
+    gt_drop_max_keep_points=0,
     remove_unknown_examples=False,
     remove_environment=False,
-    db_sampler=db_sampler,
+    db_sampler=None,
     class_names=class_names,
 )
 
@@ -186,8 +186,8 @@ val_anno = "data/nuScenes/infos_val_10sweeps_withvelo_filter_True.pkl"
 test_anno = None
 
 data = dict(
-    samples_per_gpu=4,
-    workers_per_gpu=8,
+    samples_per_gpu=1,
+    workers_per_gpu=0,
     train=dict(
         type=dataset_type,
         root_path=data_root,

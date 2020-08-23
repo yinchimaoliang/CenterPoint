@@ -1,5 +1,5 @@
 import numpy as np
-
+import pdb
 from det3d import torchie
 from det3d.core.evaluation.bbox_overlaps import bbox_overlaps
 from det3d.core.bbox import box_np_ops
@@ -74,13 +74,14 @@ class Preprocess(object):
         self.kitti_double = cfg.get("kitti_double", False)
 
     def __call__(self, res, info):
-
         res["mode"] = self.mode
 
         if res["type"] in ["KittiDataset", "WaymoDataset", "LyftDataset"]:
             points = res["lidar"]["points"]
         elif res["type"] in ["NuScenesDataset"]:
             points = res["lidar"]["combined"]
+
+        pdb.set_trace()
 
         if self.mode == "train":
             anno_dict = res["lidar"]["annotations"]
@@ -200,16 +201,16 @@ class Preprocess(object):
                         points = points[np.logical_not(masks.any(-1))]
 
                     points = np.concatenate([sampled_points, points], axis=0)
-            prep.noise_per_object_v3_(
-                gt_dict["gt_boxes"],
-                points,
-                gt_boxes_mask,
-                rotation_perturb=self.gt_rotation_noise,
-                center_noise_std=self.gt_loc_noise_std,
-                global_random_rot_range=self.global_random_rot_range,
-                group_ids=None,
-                num_try=100,
-            )
+            # prep.noise_per_object_v3_(
+            #     gt_dict["gt_boxes"],
+            #     points,
+            #     gt_boxes_mask,
+            #     rotation_perturb=self.gt_rotation_noise,
+            #     center_noise_std=self.gt_loc_noise_std,
+            #     global_random_rot_range=self.global_random_rot_range,
+            #     group_ids=None,
+            #     num_try=100,
+            # )
 
             _dict_select(gt_dict, gt_boxes_mask)
 
@@ -227,8 +228,8 @@ class Preprocess(object):
             elif self.flip_single or iskitti:
                 assert False, "nuscenes double flip is better"
                 gt_dict["gt_boxes"], points = prep.random_flip(gt_dict["gt_boxes"], points)
-            else:
-                gt_dict["gt_boxes"], points = prep.random_flip_both(gt_dict["gt_boxes"], points)
+            # else:
+            #     gt_dict["gt_boxes"], points = prep.random_flip_both(gt_dict["gt_boxes"], points)
             
             gt_dict["gt_boxes"], points = prep.global_rotation(
                 gt_dict["gt_boxes"], points, rotation=self.global_rotation_noise
@@ -282,6 +283,7 @@ class Preprocess(object):
         if self.mode == "train":
             res["lidar"]["annotations"] = gt_dict
 
+        pdb.set_trace()
         return res, info
 
 

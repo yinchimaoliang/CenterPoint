@@ -4,6 +4,7 @@ import json
 import random
 import operator
 import numpy as np
+import pdb
 
 from functools import reduce
 from pathlib import Path
@@ -58,7 +59,7 @@ class NuScenesDataset(PointCloudDataset):
 
         if not hasattr(self, "_nusc_infos"):
             self.load_infos(self._info_path)
-
+        pdb.set_trace()
         self._num_point_features = NuScenesDataset.NumPointFeatures
         self._name_mapping = general_to_detection
 
@@ -93,9 +94,10 @@ class NuScenesDataset(PointCloudDataset):
             ratios = [frac / v for v in _cls_dist.values()]
 
             for cls_infos, ratio in zip(list(_cls_infos.values()), ratios):
-                self._nusc_infos += np.random.choice(
-                    cls_infos, int(len(cls_infos) * ratio)
-                ).tolist()
+                # self._nusc_infos += np.random.choice(
+                #     cls_infos, int(len(cls_infos) * ratio)
+                # ).tolist()
+                self._nusc_infos += cls_infos[:int(len(cls_infos) * ratio)]
 
             _cls_infos = {name: [] for name in self._class_names}
             for info in self._nusc_infos:
@@ -181,6 +183,7 @@ class NuScenesDataset(PointCloudDataset):
         return data
 
     def __getitem__(self, idx):
+        idx=1000
         return self.get_sensor_data(idx)
 
     def evaluation(self, detections, output_dir=None, testset=False):

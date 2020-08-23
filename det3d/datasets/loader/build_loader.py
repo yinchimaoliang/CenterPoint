@@ -23,7 +23,7 @@ if platform.system() != "Windows":
 def build_dataloader(
     dataset, batch_size, workers_per_gpu, num_gpus=1, dist=True, **kwargs
 ):
-    shuffle = kwargs.get("shuffle", True)
+    shuffle = False
     if dist:
         rank, world_size = get_dist_info()
         # sampler = DistributedSamplerV2(dataset,
@@ -47,7 +47,7 @@ def build_dataloader(
         dataset,
         batch_size=batch_size,
         sampler=sampler,
-        shuffle=(sampler is None),
+        shuffle=False,
         num_workers=num_workers,
         collate_fn=collate_kitti,
         # pin_memory=True,
