@@ -149,7 +149,7 @@ train_preprocessor = dict(
     gt_drop_max_keep_points=15,
     remove_unknown_examples=False,
     remove_environment=False,
-    db_sampler=db_sampler,
+    db_sampler=None,
     class_names=class_names,
 )
 
